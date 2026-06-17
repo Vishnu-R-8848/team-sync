@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Cloud,
   Sparkles,
@@ -9,17 +9,29 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 
+import useAuth from "../../hooks/useAuth";
+
 import AuthBrand from "../components/AuthBrand";
 import AuthSocialButton from "../components/AuthSocialButton";
 import FormInput from "../components/FormInput";
 import RememberCheckbox from "../components/RememberCheckbox";
 import AuthFeatureItem from "../components/AuthFeatureItem";
 import WorkspacePreview from "../components/WorkspacePreview";
-import useAuth from "../../hooks/useAuth";
 
 const LoginPage = () => {
-  const { handleSubmit, onSubmit, errors, register, rememberMe, isSubmitting } =
-    useAuth();
+  const {
+    loginForm,
+    rememberMe,
+    handleRememberChange,
+    onLoginSubmit,
+    navigate,
+  } = useAuth();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = loginForm;
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[var(--bg-main)] text-[var(--text-primary)]">
@@ -27,7 +39,6 @@ const LoginPage = () => {
       <div className="pointer-events-none absolute bottom-0 right-0 h-[460px] w-[460px] rounded-full bg-[var(--secondary-container)]/60 blur-[130px]" />
 
       <section className="relative z-10 grid min-h-screen grid-cols-1 items-center gap-10 px-4 py-10 lg:grid-cols-[1fr_520px_1fr] lg:px-10">
-        {/* Left Content */}
         <div className="hidden justify-self-end lg:block">
           <div className="max-w-[360px]">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--outline-variant)] bg-[var(--surface-container-lowest)] px-4 py-2 text-sm font-medium text-[var(--secondary)] shadow-[var(--shadow-sm)]">
@@ -69,14 +80,13 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* Login Card */}
         <div className="mx-auto w-full max-w-[460px]">
           <div className="rounded-3xl border border-[var(--outline-variant)] bg-[var(--surface-container-lowest)] p-7 shadow-[var(--shadow-md)] sm:p-8">
             <AuthBrand />
 
             <div className="grid grid-cols-2 gap-3">
               <AuthSocialButton icon={Cloud}>GOOGLE</AuthSocialButton>
-              <AuthSocialButton icon={""}>GITHUB</AuthSocialButton>
+              <AuthSocialButton>GITHUB</AuthSocialButton>
             </div>
 
             <div className="my-8 flex items-center gap-4">
@@ -87,7 +97,7 @@ const LoginPage = () => {
               <div className="h-px flex-1 bg-[var(--outline-variant)]" />
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onLoginSubmit)} className="space-y-5">
               <FormInput
                 id="email"
                 type="email"
@@ -139,7 +149,7 @@ const LoginPage = () => {
 
               <RememberCheckbox
                 checked={rememberMe}
-                onChange={() => setRememberMe((prev) => !prev)}
+                onChange={handleRememberChange}
               />
 
               <button
@@ -158,12 +168,12 @@ const LoginPage = () => {
             <div className="mt-8 border-t border-[var(--outline-variant)] pt-6 text-center">
               <p className="text-sm text-[var(--on-surface-variant)]">
                 Don&apos;t have an account?{" "}
-                <Link
-                  to="/register"
+                <span
+                  onClick={() => navigate("/register")}
                   className="font-bold text-[var(--primary)] transition hover:text-[var(--on-primary-fixed-variant)]"
                 >
                   Sign Up
-                </Link>
+                </span>
               </p>
             </div>
           </div>

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import {  Lock, Mail, Network, User } from "lucide-react";
-import { Link } from "react-router";
+import React from "react";
+import { Lock, Mail, Network, User, Cloud } from "lucide-react";
+import { useNavigate } from "react-router";
+
+import useAuth from "../../hooks/useAuth";
 
 import AuthVisualPanel from "../components/AuthVisualPanel";
 import AuthSocialButton from "../components/AuthSocialButton";
@@ -10,53 +11,25 @@ import PasswordStrength from "../components/PasswordStrength";
 import TermsCheckbox from "../components/TermsCheckbox";
 
 const RegisterPage = () => {
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    registerForm,
+    acceptedTerms,
+    handleTermsChange,
+    password,
+    onRegisterSubmit,
+  } = useAuth();
 
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
-    clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: {
-      fullName: "",
-      email: "",
-      password: "",
-    },
-  });
+  } = registerForm;
 
-  const password = watch("password");
-
-  const handleTermsChange = () => {
-    const nextValue = !acceptedTerms;
-    setAcceptedTerms(nextValue);
-
-    if (nextValue) {
-      clearErrors("terms");
-    }
-  };
-
-  const onSubmit = async (data) => {
-    if (!acceptedTerms) {
-      setError("terms", {
-        type: "manual",
-        message: "Please accept the terms and privacy policy",
-      });
-      return;
-    }
-
-    const registerPayload = {
-      ...data,
-      acceptedTerms,
-    };
-
-    console.log("Register data:", registerPayload);
-
-    // later:
-    // dispatch(registerUser(registerPayload));
-    // navigate("/login");
+  const handleRegisterSubmit = async (data) => {
+    await onRegisterSubmit(data);
+    navigate("/login");
   };
 
   return (
@@ -88,7 +61,10 @@ const RegisterPage = () => {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-10 space-y-7">
+            <form
+              onSubmit={handleSubmit(handleRegisterSubmit)}
+              className="mt-10 space-y-7"
+            >
               <FormInput
                 id="fullName"
                 label="Full Name"
@@ -168,18 +144,19 @@ const RegisterPage = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <AuthSocialButton icon={''}>Google</AuthSocialButton>
+              <AuthSocialButton icon={Cloud}>Google</AuthSocialButton>
               <AuthSocialButton icon={Network}>SSO</AuthSocialButton>
             </div>
 
             <p className="mt-10 text-center text-base text-[var(--on-surface-variant)]">
               Already have an account?{" "}
-              <Link
-                to="/login"
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
                 className="font-bold text-[var(--primary)] transition hover:underline"
               >
                 Log In
-              </Link>
+              </button>
             </p>
           </div>
         </section>
@@ -192,18 +169,37 @@ const RegisterPage = () => {
           </h2>
 
           <div className="flex flex-wrap gap-7">
-            <Link to="/privacy" className="hover:text-[var(--primary)]">
+            <button
+              type="button"
+              onClick={() => navigate("/privacy")}
+              className="hover:text-[var(--primary)]"
+            >
               Privacy Policy
-            </Link>
-            <Link to="/terms" className="hover:text-[var(--primary)]">
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate("/terms")}
+              className="hover:text-[var(--primary)]"
+            >
               Terms of Service
-            </Link>
-            <Link to="/security" className="hover:text-[var(--primary)]">
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate("/security")}
+              className="hover:text-[var(--primary)]"
+            >
               Security
-            </Link>
-            <Link to="/status" className="hover:text-[var(--primary)]">
+            </button>
+
+            <button
+              type="button"
+              onClick={() => navigate("/status")}
+              className="hover:text-[var(--primary)]"
+            >
               System Status
-            </Link>
+            </button>
           </div>
 
           <p>© 2026 Team Sync. Professional Collaboration Platform.</p>

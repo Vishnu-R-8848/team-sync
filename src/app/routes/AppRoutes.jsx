@@ -2,17 +2,22 @@ import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { useDispatch } from "react-redux";
 
-import HomePage from "../../features/dashboard/ui/pages/HomePage";
+import AuthLayout from "../layouts/AuthLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
+
 import LoginPage from "../../features/auth/ui/pages/LoginPage";
 import RegisterPage from "../../features/auth/ui/pages/RegisterPage";
+import UnauthorizedPage from "../../features/auth/ui/pages/UnauthorizedPage.jsx";
 
-import DashboardLayout from "../layouts/DashboardLayout";
-import AuthLayout from "../layouts/AuthLayout";
+import PublicRoutes from "./ProtectedRoutes/PublicRoutes";
+import ProtectedRoutes from "./ProtectedRoutes/ProtectedRoutes";
+import RoleBasedRoutes from "./ProtectedRoutes/RoleBasedRoutes";
 
 import { currentLoggedEmployee } from "../../features/auth/states/auth/authActions";
 
-import ProtectedRoutes from "./ProtectedRoutes";
-import PublicRoutes from "./PublicRoutes";
+import { commonRoutes } from "./commonRoutes";
+import { adminRoutes } from "./ProtectedRoutes/AdminRoutes";
+import { employeeRoutes } from "./ProtectedRoutes/EmployeeRoutes";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -53,13 +58,25 @@ const AppRoutes = () => {
         {
           element: <DashboardLayout />,
           children: [
+            ...commonRoutes,
+
             {
-              index: true,
-              element: <HomePage />,
+              element: <RoleBasedRoutes allowedRoles={["admin"]} />,
+              children: adminRoutes,
+            },
+
+            {
+              element: <RoleBasedRoutes allowedRoles={["employee"]} />,
+              children: employeeRoutes,
             },
           ],
         },
       ],
+    },
+
+    {
+      path: "/unauthorized",
+      element: <UnauthorizedPage />,
     },
   ]);
 

@@ -42,7 +42,7 @@ const HeaderNavbar = () => {
             className="cursor-pointer text-[var(--text-primary)]"
           />
         )}
-
+{/* 
         <Bell
           size={23}
           className="cursor-pointer text-[var(--text-primary)]"
@@ -51,10 +51,10 @@ const HeaderNavbar = () => {
         <Menu
           size={23}
           className="cursor-pointer text-[var(--text-primary)]"
-        />
+        /> */}
 
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--bg-primary)] text-sm font-bold text-white">
+        <div className="flex items-center  gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--bg-primary)] text-sm font-bold text-[var(--primary)] border-2 border-gray-600">
             {employeeName ? employeeName.charAt(0).toUpperCase() : <UserRound size={18} />}
           </div>
 

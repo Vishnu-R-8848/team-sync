@@ -17,13 +17,13 @@ const DashboardLayout = () => {
   }, [mode]);
 
   return (
-    <div className="grid min-h-screen grid-cols-[257px_1fr] bg-[var(--bg-main)] text-[var(--text-primary)]">
+    <div className="grid h-screen grid-cols-[257px_1fr] bg-[var(--bg-main)] text-[var(--text-primary)]">
       <SideNavbar />
 
-      <div className="flex min-w-0 flex-col bg-[var(--bg-main)]">
+      <div className="flex min-w-0 flex-col bg-[var(--bg-main)] overflow-auto">
         <HeaderNavbar />
 
-        <main className="flex-1 bg-[var(--bg-main)] p-6">
+        <main className="flex-1 bg-[var(--bg-main)] p-6 h-full overflow-auto">
           <Outlet />
         </main>
       </div>

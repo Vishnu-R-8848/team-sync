@@ -86,8 +86,8 @@ const EmployeeRow = ({ employee }) => {
       <td className="px-6">
         <EmployeeActions
           employee={employee}
-          onEdit={() => console.log("Edit", employee)}
-          onDelete={() => console.log("Delete", employee)}
+          onEdit={() => navigate(`/home/employees/edit/${employee?._id}`)}
+          onDelete={() => handleDelete(employee?._id)}
           onInactive={handleStatusToggle}
         />
       </td>

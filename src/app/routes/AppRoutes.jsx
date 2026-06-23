@@ -16,8 +16,8 @@ import RoleBasedRoutes from "./ProtectedRoutes/RoleBasedRoutes";
 import { currentLoggedEmployee } from "../../features/auth/states/auth/authActions";
 
 import { commonRoutes } from "./commonRoutes";
-import { adminRoutes } from "./ProtectedRoutes/AdminRoutes";
-import { employeeRoutes } from "./ProtectedRoutes/EmployeeRoutes";
+import { adminRoutes } from "./ProtectedRoutes/adminRoutes";
+import { employeeRoutes } from "./ProtectedRoutes/employeeRoutes";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();

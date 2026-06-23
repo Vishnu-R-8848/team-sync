@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router";
-import EmployeeButton from "./EmployeeButton";
+import EmployeeButton from "../EmployeeButton";
 
 const FormActions = ({ isPending }) => {
   const navigate = useNavigate();
